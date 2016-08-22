@@ -1,0 +1,22 @@
+---
+- hosts: vagrant
+  become: true
+  tasks:
+    - name: Add ros ppa
+      command: sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+
+    - name: Add ros keyserver
+      command: apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net --recv-key 0xB01FA116
+
+    - name: Install ros full desktop
+      apt: >
+        update_cache=yes
+        state=present
+        name=ros-indigo-desktop
+
+    - name: Init rosdep
+      command: "rosdep init"
+      ignore_errors: yes
+
+    - name: Update rosdep
+      command: "rosdep update"
