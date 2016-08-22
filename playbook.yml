@@ -12,11 +12,20 @@
       apt: >
         update_cache=yes
         state=present
-        name=ros-indigo-desktop
+        name={{item}}
+      with_items:
+        - ros-indigo-desktop
+        - python-rosinstall
 
     - name: Init rosdep
-      command: "rosdep init"
-      ignore_errors: yes
+      command: rosdep init
+      ignore_errors: yes  # will raise if run previously
 
     - name: Update rosdep
-      command: "rosdep update"
+      command: rosdep update
+
+    - name: Add ros vars to env
+      lineinfile: >
+        dest=/home/vagrant/.bashrc
+        line="source /opt/ros/kinetic/setup.bash"
+        state=present
