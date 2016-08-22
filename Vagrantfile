@@ -29,15 +29,14 @@ Vagrant.configure("2") do |config|
   # config.vm.network "public_network"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.gui = false
-    vb.name = "space_bots"
+    vb.gui = true
     vb.memory = "4096"
   end
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yml"
     ansible.inventory_path = "hosts.yml"
-    ansible.verbose = "vvvv"
+    # ansible.verbose = "vvvv"
     ansible.limit = "all"
   end
 end
